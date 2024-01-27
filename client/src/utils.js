@@ -1,0 +1,6 @@
+export const FILE_NAME_HEADER = "File Name"
+export const FILE_TEXT_HEADER = "Text"
+export const FILE_NUMBER_HEADER = "File Number"
+export const FILE_HEXA_HEADER = "Hex"
+export const FILTER_BY_NAME_LABEL ="Filter by name:"
+export const SELECT_FILE_PLACEHOLDER="Select a file...."

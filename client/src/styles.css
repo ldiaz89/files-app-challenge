@@ -1,0 +1,63 @@
+body {
+  overflow: hidden;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.navbar {
+  background-color: #ff6666;
+  width: 100%;
+}
+.custom-table {
+  border-collapse: collapse;
+  width: 90%;
+  overflow: hidden;
+}
+.table-container {
+  height: 100vh; /* 100% de la altura de la ventana */
+  overflow-y: auto;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid black;
+  padding: 10px; /* Ajusta el espaciado según tus preferencias */
+  text-align: left;
+}
+
+.header-row {
+  border-bottom: 5px solid black;
+}
+
+.left-aligned {
+  text-align: left;
+}
+.data-row {
+  border-bottom: 1px solid black;
+}
+
+table.custom-table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+.dropdown-wrapper {
+  margin: 15px;
+  display: flex;
+  width: 500px;
+}
+.dropdown-wrapper,
+label {
+  padding-right: 5px;
+}
+.dropdown-wrapper select {
+  width: 200px;
+  height: 20px;
+}
+#table-header {
+  position: sticky;
+  top: 0;
+  background-color: #f2f2f2;
+  z-index: 1;
+    border-bottom: 5px solid black;
+}
