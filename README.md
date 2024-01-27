@@ -1,74 +1,49 @@
-# files-app-challenge
 
-Guía de Uso - Aplicación con API Express y Cliente React
-Esta guía proporciona instrucciones paso a paso para ejecutar la aplicación que consta de una API construida con Express en la carpeta api y una aplicación React en la carpeta client. Asegúrate de seguir estos pasos en el orden especificado.
+# React Files App
 
-Configuración Inicial
 
-1. Instalación de Dependencias
-   En cada carpeta (api y client), ejecuta el siguiente comando para instalar las dependencias del proyecto:
+Descripción de la Aplicación
+Bienvenido a nuestra aplicación de gestión de archivos, donde podrás explorar y visualizar información detallada sobre diferentes archivos. La aplicación utiliza una arquitectura cliente-servidor con React en el frontend y Node.js con Express en el backend.
 
-bash
-Copy code
-npm install
-API Express (Carpeta api) 2. Ejecución de la API
-Dentro de la carpeta api, puedes utilizar los siguientes comandos:
+Características Principales
+Visualización de Tabla de Archivos
+Explora una tabla detallada que presenta información esencial sobre varios archivos. Cada fila de la tabla representa un archivo específico y muestra datos clave como el nombre del archivo, texto asociado, número, y representación hexadecimal.
 
-Pruebas:
 
-bash
-Copy code
-npm test
-Inicio:
 
-bash
-Copy code
-npm start
-Este comando inicia la API Express.
 
-Verificación de Estilo de Código (lint):
 
-bash
-Copy code
-npm run lint
-Modo Desarrollo con Recarga Automática:
+## Tecnologias usadas
 
-bash
-Copy code
-npm run dev
-Este comando ejecuta las pruebas, verifica el estilo y utiliza nodemon para recargar automáticamente la API durante el desarrollo.
+ - [Node](https://nodejs.org/)
+ - [Express](https://expressjs.com/es/)
+ - [StandardJS](https://standardjs.com/)
+  - [React](https://es.react.dev/)
+ - [React Boostrap](https://react-bootstrap.netlify.app/)
+ - [Redux Toolkit](https://redux-toolkit.js.org/)
 
-Asegúrate de que la API esté en funcionamiento antes de proceder a la aplicación React.
 
-Aplicación React (Carpeta client) 3. Ejecución de la Aplicación
-Dentro de la carpeta client, puedes utilizar los siguientes comandos:
+## Installation
+Luego de clonar el repositorio:
+```bash
+  git clone url-del-proyecto
+```
 
-Pruebas:
+Asegúrate de tener Node.js y npm instalados en tu sistema. Luego, ejecuta los siguientes comandos en las carpetas client y api para instalar las dependencias:
 
-bash
-Copy code
-npm test
-Compilación y Inicio en Modo Desarrollo con Webpack Dev Server:
 
-bash
-Copy code
-npm start
-Este comando compila la aplicación React en modo desarrollo y la inicia con Webpack Dev Server.
-
-Compilación en Modo Producción:
-
-bash
-Copy code
-npm run build
-Este comando compila la aplicación React en modo producción.
-
-Modo Desarrollo con Webpack Dev Server:
-
-bash
-Copy code
-npm run dev
-Este comando inicia la aplicación en modo desarrollo con Webpack Dev Server.
-
-Asegúrate de que la API Express esté en ejecución antes de lanzar la aplicación React, ya que la aplicación realiza solicitudes a la API.
-
-Con estos pasos, deberías tener la API Express y la aplicación React funcionando correctamente. Abre tu navegador y visita http://localhost:3000 para interactuar con la aplicación React.
+```bash
+  npm install
+```
+ Para correr la API, asegurate estar en la carpeta /api y ejecuta
+```bash
+  npm run dev
+```
+Para ejecutar los test ejecuta
+```bash
+  npm run test
+```
+Asegurate de que la API se haya levantado correctamente antes de correr la app de React. Dentro de la carpeta /client ejecuta.
+```bash
+  npm start
+```
