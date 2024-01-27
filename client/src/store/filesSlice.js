@@ -4,9 +4,10 @@ export const filesSlice = createSlice({
   initialState: { filesList: [], files:[], isLoadingFiles: false },
   reducers: {
     setFilesList(state, action) {
+      console.log(action.payload)
       return {
         ...state,
-        filesList: action.payload,
+        filesList: action.payload.sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
       };
     },
     setFiles(state, action){
