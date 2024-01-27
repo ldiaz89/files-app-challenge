@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { CustomLine } from "./CustomLine";
 import { useSelector, useDispatch } from "react-redux";
-import axiosInstance from "../../axiosConfig";
 import { getFileList, getFiles } from "../services";
 import { setFiles, setFilesList, setIsLoadingFiles } from "../store/filesSlice";
 import FilterDropdown from "./FilterDropdown";

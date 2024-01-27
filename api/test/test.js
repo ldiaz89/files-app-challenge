@@ -26,21 +26,16 @@ describe("API Tests", () => {
     });
   });
   it("should return a list of files for GET /files/list", async () => {
-    // Configurar la respuesta simulada para axios.get
     axiosMockInstance.onGet("/files").reply(200, {
       files: ["file1.txt", "file2.txt", "file3.txt"],
     });
 
-    // Realizar la solicitud HTTP
     const response = await chai.request(app).get("/files/list");
 
-    // Afirmar que la solicitud fue exitosa (código de estado 200)
     expect(response).to.have.status(200);
 
-    // Afirmar que la respuesta es en formato JSON
     expect(response).to.be.json;
 
-    // Afirmar que la respuesta contiene la lista de archivos esperada
     expect(response.body.files).to.deep.equal([
       "file1.txt",
       "file2.txt",
@@ -48,15 +43,12 @@ describe("API Tests", () => {
     ]);
   });
    it("should fetch data for a file successfully", async () => {
-    // Configurar el mock para simular una respuesta exitosa
     const mockFileName = "test3.csv";
     const mockResponse = "FileName,test3.csv,Text,1,0x123\nAnotherText,2,0x456";
     axiosMockInstance.onGet(`file/${mockFileName}`).reply(200, mockResponse);
 
-    // Llamar a la función fetchDataForFile
     const result = await filesController.fetchDataForFile(mockFileName);
 
-    // Verificar que la respuesta sea la esperada
     expect(result.file).to.equal(mockFileName);
     expect(result.lines).to.deep.equal([
       { text: "Text", number: 1, hex: "0x123" },
@@ -65,14 +57,11 @@ describe("API Tests", () => {
   });
 
   it("should handle errors and return an error message", async () => {
-    // Configurar el mock para simular un error
     const mockFileName = "example.csv";
     axiosMockInstance.onGet(`file/${mockFileName}`).reply(500, "Internal Server Error");
 
-    // Llamar a la función fetchDataForFile
     const result = await filesController.fetchDataForFile(mockFileName);
 
-    // Verificar que la respuesta indique un error
     expect(result.error).to.equal("El archivo tiene un error");
   });
 });

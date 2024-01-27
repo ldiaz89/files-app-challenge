@@ -3,7 +3,6 @@ export const filesSlice = createSlice({
   name: "files",
   initialState: { filesList: [], files:[], isLoadingFiles: false },
   reducers: {
-    // Reducer logic here
     setFilesList(state, action) {
       return {
         ...state,
