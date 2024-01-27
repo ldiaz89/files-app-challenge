@@ -1,72 +1,78 @@
-const chai = require('chai')
-const chaiHttp = require('chai-http')
-const spies = require('chai-spies');
-const app = require('../server') // Ajusta la ruta según la estructura de tu proyecto
-const AxiosMock = require('axios-mock-adapter')
-const axiosInstance = require('../axiosConfig')
-const filesController = require('../controllers/getFilesData')
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+const spies = require("chai-spies");
+const app = require("../server"); // Ajusta la ruta según la estructura de tu proyecto
+const AxiosMock = require("axios-mock-adapter");
+const axiosInstance = require("../axiosConfig");
+const filesController = require("../controllers/getFilesData");
 
-chai.use(chaiHttp)
+chai.use(chaiHttp);
 chai.use(spies);
-const expect = chai.expect
+const expect = chai.expect;
 
-describe('API Tests', () => {
-  const axiosMockInstance = new AxiosMock(axiosInstance)
+describe("API Tests", () => {
+  const axiosMockInstance = new AxiosMock(axiosInstance);
 
   beforeEach(() => {
-    // Limpiar cualquier configuración de axios antes de cada prueba
-    axiosMockInstance.reset()
-  })
-
-  it('should return status 200 for GET /files/data', async () => {
-    it('should return status 200 and a JSON response', async () => {
-    const response = await chai.request(app).get('/files/data');
-
-    expect(response).to.have.status(200);
-    expect(response).to.be.json;
+    axiosMockInstance.reset();
   });
-  })
 
- 
-  it('should return a JSON response with data from fetchDataForFile', async () => {
-    // Configurar axios para utilizar el MockAdapter
-    const mock = new AxiosMock(axiosInstance);
+  it("should return status 200 for GET /files/data", async () => {
+    it("should return status 200 and a JSON response", async () => {
+      const response = await chai.request(app).get("/files/data");
 
+      expect(response).to.have.status(200);
+      expect(response).to.be.json;
+    });
+  });
+  it("should return a list of files for GET /files/list", async () => {
     // Configurar la respuesta simulada para axios.get
-    mock.onGet('/files').reply(200, {
-      files: {
-        file1: 'file1.csv',
-        file2: 'file2.csv',
-      },
+    axiosMockInstance.onGet("/files").reply(200, {
+      files: ["file1.txt", "file2.txt", "file3.txt"],
     });
 
-    // Simular la respuesta de fetchDataForFile
-    chai.spy.on(filesController.fetchDataForFile(), 'fetchDataForFile', () =>
-      Promise.resolve({ text: 'example', number: 42, hex: '0x123' })
-    );
+    // Realizar la solicitud HTTP
+    const response = await chai.request(app).get("/files/list");
 
-    // Crear un objeto de solicitud y respuesta falsos
-    const req = {};
-    const res = {
-      json: chai.spy(),
-      status: () => res, // Para encadenar métodos
-    };
+    // Afirmar que la solicitud fue exitosa (código de estado 200)
+    expect(response).to.have.status(200);
 
-    // Llamar al controlador
-    await filesController.getFilesData(req, res);
+    // Afirmar que la respuesta es en formato JSON
+    expect(response).to.be.json;
 
-    // Afirmaciones
-    console.log("a ver",res.status())
-    // expect(res.status).to.have.been.called.with(200);
-    expect(res.json).to.deep.include({ mensaje: [{ text: 'example', number: 42, hex: '0x123' }] });
+    // Afirmar que la respuesta contiene la lista de archivos esperada
+    expect(response.body.files).to.deep.equal([
+      "file1.txt",
+      "file2.txt",
+      "file3.txt",
+    ]);
+  });
+   it("should fetch data for a file successfully", async () => {
+    // Configurar el mock para simular una respuesta exitosa
+    const mockFileName = "test3.csv";
+    const mockResponse = "FileName,test3.csv,Text,1,0x123\nAnotherText,2,0x456";
+    axiosMockInstance.onGet(`file/${mockFileName}`).reply(200, mockResponse);
 
-    // Restaurar la implementación original de fetchDataForFile
-    chai.spy.restore(filesController.fetchDataForFile);
+    // Llamar a la función fetchDataForFile
+    const result = await filesController.fetchDataForFile(mockFileName);
 
-    // Restaurar el MockAdapter
-    mock.restore();
+    // Verificar que la respuesta sea la esperada
+    expect(result.file).to.equal(mockFileName);
+    expect(result.lines).to.deep.equal([
+      { text: "Text", number: 1, hex: "0x123" },
+      { text: "AnotherText", number: 2, hex: "0x456" },
+    ]);
   });
 
-  // Agrega más pruebas según tus requisitos
-});
+  it("should handle errors and return an error message", async () => {
+    // Configurar el mock para simular un error
+    const mockFileName = "example.csv";
+    axiosMockInstance.onGet(`file/${mockFileName}`).reply(500, "Internal Server Error");
 
+    // Llamar a la función fetchDataForFile
+    const result = await filesController.fetchDataForFile(mockFileName);
+
+    // Verificar que la respuesta indique un error
+    expect(result.error).to.equal("El archivo tiene un error");
+  });
+});

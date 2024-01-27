@@ -3,7 +3,7 @@ const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 3001
 
-app.use(cors({ origin: 'http://localhost:8080' }))
+app.use(cors())
 // Middleware para procesar datos JSON
 app.use(express.json())
 

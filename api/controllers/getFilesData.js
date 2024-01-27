@@ -1,4 +1,17 @@
 const axios = require('../axiosConfig')
+
+/**
+ * Fetches data for a specific file using an HTTP GET request with Axios.
+ *
+ * @param {string} fileName - The name of the file to fetch data from.
+ * @returns {Promise<Object>} - An object containing information about the file and its formatted lines.
+ *   - file: The name of the file.
+ *   - lines: An array of objects representing the formatted lines of the file.
+ *       - text: The text of the line.
+ *       - number: The line number (parsed as an integer).
+ *       - hex: The hexadecimal value of the line.
+ *   - error: An error message if there is an issue fetching data from the file.
+ */
 const fetchDataForFile = async (fileName) => {
   try {
     const response = await axios.get(`file/${fileName}`)
@@ -18,6 +31,7 @@ const fetchDataForFile = async (fileName) => {
         hex: hex.trim()
       }
     })
+
     return {
       file: fileName,
       lines: formattedLines.filter((data) => data !== null)
@@ -28,17 +42,26 @@ const fetchDataForFile = async (fileName) => {
   }
 }
 exports.fetchDataForFile = fetchDataForFile
+/**
+ * Retrieves data for a single file or multiple files based on the provided query parameters.
+ * If a specific file name is provided, it fetches data for that file; otherwise, it fetches data
+ * for all available files and filters out any files with errors.
+ *
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @returns {Promise<void>} - A Promise that resolves after processing the request.
+ */
 exports.getFilesData = async (req, res) => {
   const { fileName } = req.query
   try {
     if (fileName) {
       const decodedFileName = decodeURIComponent(fileName).replace(/"/g, '')
       const response = await fetchDataForFile(decodedFileName)
-      if(response.error){
-        return res.json({error: response.error})
+      if (response.error) {
+        return res.json({ error: response.error })
       }
-      if(response.lines.length === 0){
-        return res.json({error:'Empty file'})
+      if (response.lines.length === 0) {
+        return res.json({ error: 'Empty file' })
       }
       return res.json(response)
     }
@@ -55,13 +78,19 @@ exports.getFilesData = async (req, res) => {
 
     const filteredArray = responsesArray.filter((file) => !file.error)
 
-
     return res.json({ data: filteredArray })
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: 'Error en el servidor' })
   }
 }
+/**
+ * Retrieves a list of available files from the server.
+ *
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @returns {Promise<void>} - A Promise that resolves after processing the request.
+ */
 
 exports.getFilesList = async (req, res) => {
   try {
